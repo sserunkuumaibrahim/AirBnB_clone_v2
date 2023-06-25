@@ -1,16 +1,16 @@
 #!/usr/bin/python3
-""" Review module for the HBNB project """
-
+""" holds class Review"""
+import models
 from models.base_model import BaseModel, Base
 from os import getenv
-import models
 import sqlalchemy
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
 
-class Review(BaseModel):
-    """ Review classto store review information """
+
+class Review(BaseModel, Base):
+    """Representation of Review """
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'reviews'
         text = Column(String(1024),
