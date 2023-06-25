@@ -1,9 +1,8 @@
 #!/usr/bin/python3
-""" Place Module for HBNB project """
-
-from models.base_model import BaseModel
-from os import getenv
+""" holds class Place"""
 import models
+from models.base_model import BaseModel, Base
+from os import getenv
 import sqlalchemy
 from sqlalchemy import Column, String, Integer, Float, Table, ForeignKey
 from sqlalchemy.orm import relationship
@@ -21,9 +20,10 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
                                  primary_key=True,
                                  nullable=False))
 
-class Place(BaseModel):
-    """ A place to stay """
-     if getenv('HBNB_TYPE_STORAGE') == 'db':
+
+class Place(BaseModel, Base):
+    """Representation of Place """
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'places'
         city_id = Column(String(60),
                          ForeignKey("cities.id"),
