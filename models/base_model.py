@@ -1,28 +1,33 @@
 #!/usr/bin/python3
-"""This module defines a base class for all models in our hbnb clone"""
-import uuid
+"""
+Contains class BaseModel
+"""
+
 from datetime import datetime
-from os import getenv
 import models
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
+import uuid
+from os import getenv
+
+time_fmt = "%Y-%m-%dT%H:%M:%S.%f"
 
 if getenv("HBNB_TYPE_STORAGE") == 'db':
     Base = declarative_base()
 else:
     Base = object
 
-time_fmt = "%Y-%m-%dT%H:%M:%S.%f"
 
 class BaseModel:
-    """A base class for all hbnb models"""
+    """The BaseModel class from which future classes will be derived"""
+
     if getenv("HBNB_TYPE_STORAGE") == 'db':
         id = Column(String(60), nullable=False, primary_key=True)
         created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
         updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
+        """Initialization of the base model"""
         self.id = str(uuid.uuid4())
         self.created_at = datetime.now()
         self.updated_at = self.created_at
@@ -36,18 +41,18 @@ class BaseModel:
                 self.updated_at = datetime.strptime(self.updated_at, time_fmt)
 
     def __str__(self):
-        """Returns a string representation of the instance"""
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id,
+        """String representation of the BaseModel class"""
+        return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id,
                                          self.__dict__)
 
     def save(self):
-        """Updates updated_at with current time when instance is changed"""
+        """updates the attribute 'updated_at' with the current datetime"""
         self.updated_at = datetime.now()
         models.storage.new(self)
         models.storage.save()
 
     def to_dict(self, save_to_disk=False):
-        """Convert instance into dict format"""
+        """returns a dictionary containing all keys/values of the instance"""
         new_dict = self.__dict__.copy()
         if "created_at" in new_dict:
             new_dict["created_at"] = new_dict["created_at"].isoformat()

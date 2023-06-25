@@ -1,16 +1,16 @@
 #!/usr/bin/python3
-""" City Module for HBNB project """
-
+""" holds class City"""
+import models
 from models.base_model import BaseModel, Base
 from os import getenv
-import models
 import sqlalchemy
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
 
-class City(BaseModel):
-    """ The city class, contains state ID and name """
+
+class City(BaseModel, Base):
+    """Representation of city """
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'cities'
         name = Column(String(128),
@@ -26,5 +26,5 @@ class City(BaseModel):
         state_id = ""
 
     def __init__(self, *args, **kwargs):
-        """initializes city instance"""
+        """initializes city"""
         super().__init__(*args, **kwargs)
